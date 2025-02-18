@@ -93,7 +93,7 @@ body {
   transform: translateY(10px);
   display: block;
   transition: opacity 0.5s ease, transform 0.5s ease;
-  transition-delay: calc(var(--index) * 0.5s);
+  transition-delay: calc(var(--index) * 0.44s);
 }
 
 .stack-animation.animate span {
