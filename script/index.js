@@ -1,3 +1,70 @@
+//Alert function activated when whatsapp close button is clicked
+window.addEventListener("DOMContentLoaded", function () {
+  const alertElement = document.getElementById("alert-border-3");
+  const dismissButton = alertElement.querySelector(
+    '[data-dismiss-target="#alert-border-3"]'
+  );
+  let timerStarted = false;
+  let autoCloseTimer = null;
+  // Function to check if element is visible
+  function isElementVisible(el) {
+    const style = window.getComputedStyle(el);
+    return style.display !== "none" && style.visibility !== "hidden";
+  }
+  // Function to start the auto-close timer and animations
+  function startAlertTimer() {
+    if (timerStarted) return; // Prevent multiple timers
+    timerStarted = true;
+    // Add fade-in animation
+    alertElement.classList.add("fade-in", "show");
+    alertElement.classList.remove("fade-out");
+    // Start the timer for fade-out and removal
+    autoCloseTimer = setTimeout(function () {
+      closeAlert();
+    }, 6300); // Display duration before starting fade-out
+  }
+  // Function to close the alert
+  function closeAlert() {
+    // Clear any existing timer
+    if (autoCloseTimer) {
+      clearTimeout(autoCloseTimer);
+    }
+    // Start fade-out animation
+    alertElement.classList.remove("fade-in");
+    alertElement.classList.add("fade-out");
+    // Remove element after animation completes
+    setTimeout(function () {
+      alertElement.remove();
+    }, 500); // Matches the fade-out animation duration
+  }
+  // Create a MutationObserver to watch for style/display changes
+  const observer = new MutationObserver(function (mutations) {
+    mutations.forEach(function (mutation) {
+      if (
+        mutation.attributeName === "style" ||
+        mutation.attributeName === "class"
+      ) {
+        if (isElementVisible(alertElement) && !timerStarted) {
+          startAlertTimer();
+        }
+      }
+    });
+  });
+  // Add click event listener to dismiss button
+  dismissButton.addEventListener("click", function () {
+    closeAlert();
+  });
+  // Start observing the alert element for style and class changes
+  observer.observe(alertElement, {
+    attributes: true,
+    attributeFilter: ["style", "class"],
+  });
+  // Check initial state
+  if (isElementVisible(alertElement) && !timerStarted) {
+    startAlertTimer();
+  }
+});
+//Ordinary alert function when whatsapp modal is removed
 // window.addEventListener('DOMContentLoaded', function () {
 //     var alertElement = document.getElementById('alert-border-3');
 //     alertElement.classList.add('fade-in', 'show');
@@ -16,6 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const contactModal = document.getElementById('contactModal');
     const closeModalBtn = document.getElementById('closeModal');
     const whatsappLink = document.getElementById('whatsappLink');
+    const alertElement = document.getElementById("alert-border-3");
 
     // Function to show the modal
     function showModal() {
@@ -27,6 +95,8 @@ document.addEventListener('DOMContentLoaded', () => {
     function closeModal() {
         // Simply hide the modal
         contactModal.style.display = 'none';
+        alertElement.style.display = "flex";
+        scrollToTop();
     }
 
     // Function to scroll to modal
@@ -52,6 +122,14 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+//Scroll to top
+  function scrollToTop() {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }
+
     // Ensure WhatsApp link opens in new tab
     whatsappLink.setAttribute('target', '_blank');
     whatsappLink.setAttribute('rel', 'noopener noreferrer');
@@ -73,12 +151,42 @@ document.addEventListener("DOMContentLoaded", function () {
   const stackAnimation = document.querySelector(".stack-animation");
   const spans = stackAnimation.querySelectorAll("span");
 
+  // Set initial index for each span
   spans.forEach((span, index) => {
     span.style.setProperty("--index", index);
   });
 
-  stackAnimation.classList.add("animate");
+  // Create Intersection Observer
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          // Element is visible in viewport
+          stackAnimation.classList.add("animate");
+        } else {
+        }
+      });
+    },
+    {
+      threshold: 0.99, // Trigger when 99% of the element is visible
+    }
+  );
+
+  // Start observing the element
+  observer.observe(stackAnimation);
 });
+//Commented previous animation function (Start)//
+// document.addEventListener("DOMContentLoaded", function () {
+//   const stackAnimation = document.querySelector(".stack-animation");
+//   const spans = stackAnimation.querySelectorAll("span");
+
+//   spans.forEach((span, index) => {
+//     span.style.setProperty("--index", index);
+//   });
+
+//   stackAnimation.classList.add("animate");
+// });
+//Commented previous animation function (end)//
 
 ///WhatsApp Group Join required checkbox code in html///
 // document.addEventListener('DOMContentLoaded', () => {
