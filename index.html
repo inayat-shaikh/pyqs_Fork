@@ -81,34 +81,81 @@ document.addEventListener('DOMContentLoaded', async function () {
 
             document.getElementById('initialLoading').style.display = 'none';
             document.getElementById('content').removeAttribute('style');
-            document.getElementById('content').style.cssText = `background: linear-gradient(214deg, #6a2aaf, #2e2a9e, #2c9995, #0a1438, #08122c, #08122c, #6a2aaf, #2e2a9e, #08122c, #0a1438, #0a1438, #2c9995, #2e2a9e, #6a2aaf);
-                backdrop-filter: blur(30px);
-                -webkit-backdrop-filter: blur(30px);
+
+            // Determine animation duration based on screen width
+            const animationDuration = window.innerWidth >= 768 ? '20s' : '7s';
+
+            // Create a style element for the animation
+            const style = document.createElement('style');
+            style.type = 'text/css';
+            style.innerHTML = `
+                @keyframes gradientAnimation {
+                    0% { background-position: 0% 50%; }
+                    50% { background-position: 100% 50%; }
+                    100% { background-position: 0% 50%; }
+                }
+            `;
+            document.head.appendChild(style);
+
+            document.getElementById('content').style.cssText = `
+                background: linear-gradient(214deg, #6a2aaf, #2e2a9e, #2c9995, #0a1438, #08122c, 
+                    #0a1438, #6a2aaf, #2c9995, #2e2a9e, #08122c,
+                    #08122c, #0a1438, #2c9995, #2e2a9e, #6a2aaf,
+                    #0a1438, #6a2aaf, #2c9995, #2e2a9e, #08122c,
+                    #08122c, #0a1438, #2c9995, #2e2a9e, #6a2aaf,
+                    #6a2aaf, #2e2a9e, #2c9995, #0a1438, #08122c);
+                backdrop-filter: blur(110px);
+                -webkit-backdrop-filter: blur(110px);
                 font-family: 'Plus Jakarta Sans', sans-serif;
                 font-optical-sizing: auto;
                 font-style: normal;
-                background-size: cover;
+                background-size: 400% 400%;
                 background-repeat: no-repeat;
                 background-attachment: fixed;
-                margin: 0;`;
+                margin: 0;
+                animation: gradientAnimation ${animationDuration} ease infinite;
+            `;
         } else {
-
             console.log("24 hours have passed; verifying with Firebase.");
             const isRegistered = await checkRegistration(accessKey);
             if (isRegistered) {
                 console.log("User is registered, showing content and updating lastCheckTime.");
                 document.getElementById('initialLoading').style.display = 'none';
                 document.getElementById('content').removeAttribute('style');
-                document.getElementById('content').style.cssText = `background: linear-gradient(214deg, #6a2aaf, #2e2a9e, #2c9995, #0a1438, #08122c, #08122c, #6a2aaf, #2e2a9e, #08122c, #0a1438, #0a1438, #2c9995, #2e2a9e, #6a2aaf);
-                    backdrop-filter: blur(30px);
-                    -webkit-backdrop-filter: blur(30px);
+
+                // Determine animation duration based on screen width
+                const animationDuration = window.innerWidth >= 768 ? '25s' : '9s';
+
+                // Create a style element for the animation
+                const style = document.createElement('style');
+                style.type = 'text/css';
+                style.innerHTML = `
+                    @keyframes gradientAnimation {
+                        0% { background-position: 0% 50%; }
+                        50% { background-position: 100% 50%; }
+                        100% { background-position: 0% 50%; }
+                    }
+                `;
+                document.head.appendChild(style);
+
+                document.getElementById('content').style.cssText = `
+                    background: linear-gradient(214deg, #6a2aaf, #2e2a9e, #2c9995, #0a1438, #08122c, 
+                    #0a1438, #6a2aaf, #2c9995, #2e2a9e, #08122c,
+                    #08122c, #0a1438, #2c9995, #2e2a9e, #6a2aaf,
+                    #0a1438, #6a2aaf, #2c9995, #2e2a9e, #08122c,
+                    #08122c, #0a1438, #2c9995, #2e2a9e, #6a2aaf,
+                    #6a2aaf, #2e2a9e, #2c9995, #0a1438, #08122c);
+                backdrop-filter: blur(110px);
+                -webkit-backdrop-filter: blur(110px);
                     font-family: 'Plus Jakarta Sans', sans-serif;
                     font-optical-sizing: auto;
                     font-style: normal;
-                    background-size: cover;
+                    background-size: 400% 400%;
                     background-repeat: no-repeat;
                     background-attachment: fixed;
-                    margin: 0;`;
+                    margin: 0;
+                    animation: gradientAnimation ${animationDuration} ease infinite;
+                `;
 
                 localStorage.setItem('lastCheckTime', currentTime);
             } else {
@@ -166,11 +213,18 @@ min-height: 100vh;">
             <div id="card1" style="
             margin-right: 10px;
             margin-left: 10px;
-            margin-top: 10px; color: #fff;"
-                class="card block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
-                <a href="#">
-                    <h5 class="mb-2 text-2xl font-bold tracking-tight text-white-900 dark:text-white">GROUP I</h5>
-                </a>
+            margin-top: 10px; 
+            color: #fff; 
+            border-radius: 50px;"
+                class="card block max-w-sm p-6 bg-white border border-gray-200 shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+
+                <!-- Center the <h5> -->
+                <div style="display: flex; justify-content: center;">
+                    <a href="#">
+                        <h5 class="mb-2 text-2xl font-bold tracking-tight text-white-900 dark:text-white">GROUP I</h5>
+                    </a>
+                </div>
+
                 <p class="mb-3 font-normal text-white-700">[GROUP I] is Consist of : <br> ●
                     Physics <br> ● Mathematics <br> ● Basic Electrical Engineering <br>● Engineering Graphics &
                     Design
@@ -193,15 +247,19 @@ min-height: 100vh;">
                         </ul>
                     </div>
                 </div>
-                <a href="group1.html" style="border-radius: 18px;"
-                    class="inline-flex items-center px-3 py-2 text-base font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300">
-                    Continue
-                    <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                        fill="none" viewBox="0 0 14 10">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M1 5h12m0 0L9 1m4 4L9 9" />
-                    </svg>
-                </a>
+
+                <!-- Center the "Continue" button -->
+                <div style="display: flex; justify-content: center;">
+                    <a href="group1.html" style="border-radius: 18px;"
+                        class="inline-flex items-center px-3 py-2 text-base font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300">
+                        Continue
+                        <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M1 5h12m0 0L9 1m4 4L9 9" />
+                        </svg>
+                    </a>
+                </div>
             </div>
 
             <!-------------------CARD 2-------------------------->
@@ -209,14 +267,22 @@ min-height: 100vh;">
             margin-right: 10px;
             margin-left: 10px;
             margin-top: 10px;
-            margin-bottom: 25px; color: #fff;"
+            margin-bottom: 25px; 
+            color: #fff;
+            border-radius: 50px;"
                 class="card block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
-                <a href="#">
-                    <h5 class="mb-2 text-2xl font-bold tracking-tight text-white-900 dark:text-white">GROUP II</h5>
-                </a>
+
+                <!-- Center the <h5> -->
+                <div style="display: flex; justify-content: center;">
+                    <a href="#">
+                        <h5 class="mb-2 text-2xl font-bold tracking-tight text-white-900 dark:text-white">GROUP II</h5>
+                    </a>
+                </div>
+
                 <p class="mb-3 font-normal text-white-700">[GROUP II] is Consist of : <br> ●
                     Chemistry <br> ● Programming for Problem Solving <br>● Mathematics <br>● Engineering Mechanics <br>●
-                    Introduction To Indian Knowledge System.</p>
+                    Introduction To Indian Knowledge System.
+                </p>
 
                 <!--------------NOTE-------------->
                 <div class="flex p-4 mb-4 text-sm text-blue-800 rounded-lg bg-blue-50 dark:bg-gray-800 dark:text-blue-400"
@@ -234,15 +300,19 @@ min-height: 100vh;">
                         </ul>
                     </div>
                 </div>
-                <a href="group2.html" style="border-radius: 18px;"
-                    class="inline-flex items-center px-3 py-2 text-base font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300">
-                    Continue
-                    <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                        fill="none" viewBox="0 0 14 10">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M1 5h12m0 0L9 1m4 4L9 9" />
-                    </svg>
-                </a>
+
+                <!-- Center the "Continue" button -->
+                <div style="display: flex; justify-content: center;">
+                    <a href="group2.html" style="border-radius: 18px;"
+                        class="inline-flex items-center px-3 py-2 text-base font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300">
+                        Continue
+                        <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M1 5h12m0 0L9 1m4 4L9 9" />
+                        </svg>
+                    </a>
+                </div>
             </div>
         </div>
     </div>
